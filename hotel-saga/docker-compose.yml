@@ -1,0 +1,89 @@
+version: "3.9"
+
+services:
+  # ---------- API Gateway (único punto de entrada) ----------
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - BFF_URL=http://bff:8090
+      - HABITACIONES_URL=http://habitaciones:3001
+      - PAGOS_URL=http://pagos:3002
+      - CONFIRMACION_URL=http://confirmacion:3003
+      - SAGA_URL=http://saga-orchestrator:3004
+    depends_on:
+      - bff
+      - habitaciones
+      - pagos
+      - confirmacion
+      - saga-orchestrator
+    networks:
+      - hotelnet
+
+  # ---------- BFF ----------
+  bff:
+    build: ./bff
+    container_name: bff
+    environment:
+      - HABITACIONES_URL=http://habitaciones:3001
+      - PAGOS_URL=http://pagos:3002
+      - CONFIRMACION_URL=http://confirmacion:3003
+      - SAGA_URL=http://saga-orchestrator:3004
+    networks:
+      - hotelnet
+
+  # ---------- Saga Orchestrator ----------
+  saga-orchestrator:
+    build: ./services/saga-orchestrator
+    container_name: saga-orchestrator
+    environment:
+      - HABITACIONES_URL=http://habitaciones:3001
+      - PAGOS_URL=http://pagos:3002
+      - CONFIRMACION_URL=http://confirmacion:3003
+    networks:
+      - hotelnet
+
+  # ---------- Servicio Habitaciones ----------
+  habitaciones:
+    build: ./services/habitaciones
+    container_name: habitaciones
+    environment:
+      - DB_PATH=/data/habitaciones.db
+    volumes:
+      - habitaciones-data:/data
+    networks:
+      - hotelnet
+
+  # ---------- Servicio Pagos ----------
+  pagos:
+    build: ./services/pagos
+    container_name: pagos
+    environment:
+      - DB_PATH=/data/pagos.db
+    volumes:
+      - pagos-data:/data
+    networks:
+      - hotelnet
+
+  # ---------- Servicio Confirmación ----------
+  confirmacion:
+    build: ./services/confirmacion
+    container_name: confirmacion
+    environment:
+      - DB_PATH=/data/confirmacion.db
+    volumes:
+      - confirmacion-data:/data
+    networks:
+      - hotelnet
+
+volumes:
+  habitaciones-data:
+  pagos-data:
+  confirmacion-data:
+
+networks:
+  hotelnet:
+    driver: bridge
