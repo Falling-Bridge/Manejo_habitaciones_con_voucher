@@ -554,6 +554,9 @@ Estas limitaciones permiten distinguir entre los mecanismos implementados, los r
 
 - Opossum. *Node.js Circuit Breaker*. https://nodeshift.dev/opossum/
 - Microservices.io. *Saga Pattern*. https://microservices.io/patterns/data/saga.html
+- Microservices.io. *API Gateway Pattern*. https://microservices.io/patterns/apigateway.html
+- Newman, S. *Building Microservices*. O'Reilly, 2021.
+- Richardson, C. *Microservices Patterns*. Manning, 2018.
 
 ## 10. Video de prueba
 
@@ -561,6 +564,3 @@ Prometo que es un link no malicioso
 ```
 https://udeconce-my.sharepoint.com/:v:/g/personal/lucmorales2023_udec_cl/IQDkb4j87yrMTLRNXK9ETRqKARkywvmdtSj4_GG2naMHwz8?e=m1Uwnc
 ```
-- Microservices.io. *API Gateway Pattern*. https://microservices.io/patterns/apigateway.html
-- Newman, S. *Building Microservices*. O'Reilly, 2021.
-- Richardson, C. *Microservices Patterns*. Manning, 2018.
